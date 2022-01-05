@@ -1,5 +1,6 @@
 const express = require('express');
-const { getProducts, addProduct } = require('../services/products.service')
+const res = require('express/lib/response');
+const { addProduct, deleteProduct, getProducts, updateProduct } = require('../services/products.service')
 
 const router = express.Router();
 
@@ -14,6 +15,18 @@ router.post('/', async (req, res) => {
     const product = await addProduct(newProduct);
 
     res.json(product);
+})
+
+router.patch('/:id', async (req, res) => {
+    const response = await updateProduct(req.params.id, req.body)
+
+    res.send(response)
+})
+
+router.delete('/:id', async (req, res) => {
+    const response = await deleteProduct(req.params.id)
+
+    res.send(response)
 })
 
 module.exports = router;

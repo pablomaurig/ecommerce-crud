@@ -10,14 +10,11 @@ db.connect(
         useNewUrlParser: true,
         useUnifiedTopology: true,
     },
-    () => console.log(" Mongoose is connected")
+    () => console.log("Mongoose is connected")
 )
-
-console.log('[db] Successfully connected')
 
 async function addProduct(product){
     try{
-        console.log('product', product)
         const newProduct = new ProductModel(product);
         
         return await newProduct.save()
@@ -36,7 +33,31 @@ async function getProducts(){
     }
 }
 
+async function updateProduct(id, product){
+    try{
+        let updatedProduct = await ProductModel.findOneAndUpdate({_id: id}, product, {
+            new: true
+        });
+
+        return updatedProduct;
+    } catch(error){
+        console.log(error)
+    }
+}
+
+async function deleteProduct(id){
+    try{
+        let deletedProduct = await ProductModel.findOneAndDelete({_id: id});
+
+        return deletedProduct;
+    } catch(error){
+        console.log(error)
+    }
+}
+
 module.exports = {
     addProduct,
-    getProducts
+    deleteProduct,
+    getProducts,
+    updateProduct
 }
